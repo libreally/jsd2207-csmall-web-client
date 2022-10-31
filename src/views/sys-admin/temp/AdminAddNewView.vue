@@ -64,7 +64,8 @@ export default {
         telephone:'',
         description: '',
         email:'',
-        photo:''
+        photo:'',
+        name:''
       },
       options: [{
         value: '选项1',
@@ -83,17 +84,32 @@ export default {
         label: '北京烤鸭'
       }],
       rules: {
-        name: [
-          {required: true, message: '请输入相册名称', trigger: 'blur'},
+        username: [
+          {required: true, message: '请输入用户名', trigger: 'blur'},
           {min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur'}
         ],
-        description: [
-          {required: true, message: '请输入相册简介', trigger: 'blur'},
+        password: [
+          {required: true, message: '请输入用户密码', trigger: 'blur'},
           {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
         ],
-        sort: [
-          {required: true, message: '请输入排序序号', trigger: 'blur'},
+        nickname: [
+          {required: true, message: '请输入用户昵称', trigger: 'blur'},
+          {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
         ],
+        telephone: [
+          {required: true, message: '请输入手机号', trigger: 'blur'},
+          {min: 11, max: 11, message: '长度在 11个字符', trigger: 'blur'}
+        ],
+        email: [
+          {required: true, message: '请输入用户邮箱', trigger: 'blur'},
+          {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
+        ],
+        state: [
+          {required: true, message: '请选择状态', trigger: 'blur'},
+        ],
+        name:[
+          {required: true, message: '请选择角色', trigger: 'blur'},
+        ]
       }
     };
   },
