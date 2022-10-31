@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div style="width: 600px; background: #fff; margin: 30px auto; padding: 50px;">
-      <h1 style="text-align: center;margin: 30px auto;padding: 10px 20px;">管理员登录</h1>
+    <div style="width: 600px; background: #fff; margin: 60px auto; padding: 20px 50px;">
+      <h1 style="text-align: center; margin: 30px auto;">管理员登录</h1>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="ruleForm.username"></el-input>
@@ -57,5 +57,7 @@ export default {
 </script>
 
 <style>
-body { background: #2c3e50; }
+body {
+  background: #2c3e50;
+}
 </style>

@@ -7,19 +7,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/AboutView.vue')/*动态*/
+    component: HomeView,
+    children:[
+      {
+        path: '/about',
+        component: () => import('../views/AboutView.vue')/*动态*/
+      },
+    ]
   },
   {
     path: '/Login',
-    name: 'about',
     component: () => import('../views/LoginView.vue')/*动态*/
-  }
+  },
+
 
 ]
 
