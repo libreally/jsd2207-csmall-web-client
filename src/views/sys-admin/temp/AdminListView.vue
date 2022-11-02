@@ -6,6 +6,5 @@
     </el-breadcrumb>
 <!--分割线-->
     <el-divider></el-divider>
-    <el-empty description="当前页面正在开发中敬请期待"></el-empty>
   </div>
 </template>

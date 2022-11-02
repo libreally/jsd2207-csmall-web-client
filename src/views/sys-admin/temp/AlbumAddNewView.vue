@@ -59,7 +59,7 @@ export default {
             let responseBody = response.data;
             console.log('responseBody =');
             console.log(responseBody)
-            if (responseBody.state===1){
+            if (responseBody.state===100){
               this.$message({
                 message: responseBody.message,
                 type:'success'
