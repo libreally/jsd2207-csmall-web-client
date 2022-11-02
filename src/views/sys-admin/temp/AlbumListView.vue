@@ -45,7 +45,7 @@ export default {
       });
     },
     handleDelete(album) {
-      let url = 'http://localhost:9080/albums/' + album.id + '/delete';
+      let url = 'http://localhost:9080/album/' + album.id + '/delete';
       console.log('url = ' + url);
       this.axios.post(url).then((response) => {
         let responseBody = response.data;
