@@ -41,7 +41,7 @@ export default {
       });
     },
     handleEdit(album) {
-      let message = '您正在尝试编辑【' + album.id + '-' + album.name + '】的相册详情，抱歉，该功能尚未实现……';
+      let message = '您正在尝试编辑【' + album.id + '-' + album.name + '】的商品详情，抱歉，该功能尚未实现……';
       this.$alert(message, '提示', {
         confirmButtonText: '确定'
       });
@@ -60,7 +60,7 @@ export default {
       });
     },
     openDeleteConfirm(album) {
-      let message = '此操作将永久删除【' + album.name + '】相册，是否继续？';
+      let message = '此操作将永久删除【' + album.name + '】商品，是否继续？';
       this.$confirm(message, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
