@@ -90,7 +90,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9080/album/add-newAlbum';
+          let url = 'http://localhost:9080/attribute/add-new';
           console.log('url=' + url);
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData=' + formData);
