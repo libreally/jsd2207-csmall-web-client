@@ -10,18 +10,32 @@
       <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
       <el-table-column prop="username" label="用户名" width="150" align="center"></el-table-column>
       <el-table-column prop="nickname" label="昵称" width="100" align="center"></el-table-column>
-      <el-table-column prop="avatar" label="头像url" width="100" align="center"></el-table-column>
-      <el-table-column prop="phone" label="手机号" width="100" align="center"></el-table-column>
+      <el-table-column prop="phone" label="手机号" width="110" align="center"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="100" align="center"></el-table-column>
       <el-table-column prop="description" label="描述" width="100" align="center"></el-table-column>
-      <el-table-column prop="enable" label="是否启用" width="100" align="center"></el-table-column>
-      <el-table-column prop="lastLoginId" label="最后登录IP地址" width="100" align="center"></el-table-column>
+      <el-table-column label="是否启用" width="100" align="center">
+        <template slot-scope="scope">
+          <el-switch
+              @change="changeEnable(scope.row)"
+              v-model="scope.row.enable"
+              :disabled="scope.row.id===1"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#13ce66"
+              inactive-color="#AAAAAA">
+          </el-switch>
+        </template>
+      </el-table-column>
+<!--      <el-table-column prop="lastLoginId" label="最后登录IP地址" width="100" align="center"></el-table-column>
       <el-table-column prop="loginCount" label="累计登录次数" width="100" align="center"></el-table-column>
-      <el-table-column prop="gmtLastLogin" label="最后登录时间" width="100" align="center"></el-table-column>
+      <el-table-column prop="gmtLastLogin" label="最后登录时间" width="100" align="center"></el-table-column>-->
       <el-table-column label="操作" width="120" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+          <el-button type="primary" icon="el-icon-edit"
+                     :disabled="scope.row.id===1"
+                     circle size="mini" @click="handleEdit"></el-button>
           <el-button type="danger" icon="el-icon-delete"
+                     :disabled="scope.row.id===1"
                      circle size="mini" @click="openDeleteConfirm(scope.row)"></el-button>
         </template>
       </el-table-column>
@@ -36,6 +50,33 @@ export default {
     }
   },
   methods:{
+    changeEnable(admin) {
+      let enableText = ['禁用', '启用'];
+      let url = 'http://localhost:9081/admins/' + admin.id;
+      if (admin.enable === 1) {
+        console.log('将启用管理员');
+        url += '/enable';
+      } else {
+        console.log('将禁用管理员');
+        url += '/disable';
+      }
+      console.log('url = ' + url);
+      this.axios.post(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state === 20000) {
+          let message = '将管理员【' + admin.username + '】的启用状态改为【' + enableText[admin.enable] + '】成功！';
+          this.$message({
+            message: message,
+            type: 'success'
+          });
+        } else {
+          this.$message.error(responseBody.message);
+        }
+        if (responseBody.state === 40400) {
+          this.loadAdminList();
+        }
+      });
+    },
     loadAlbumList(){
       console.log("loadAlbumList");
       let url='http://localhost:9081/admins';
@@ -75,6 +116,15 @@ export default {
       }).catch(() => {
       });
     },
+    loadAdminList() {
+      console.log('loadAdminList');
+      let url = 'http://localhost:9081/admins';
+      console.log('url = ' + url);
+      this.axios.get(url).then((response) => {
+        let responseBody = response.data;
+        this.tableData = responseBody.data;
+      });
+    }
   },
   mounted(){
     console.log("mounted");

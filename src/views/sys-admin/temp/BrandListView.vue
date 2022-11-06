@@ -15,7 +15,7 @@
       <el-table-column prop="description" label="简介" width="100" align="center"></el-table-column>
       <el-table-column label="操作" width="120" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+          <el-button type="primary" icon="el-icon-edit" circle size="mini" @click="handleEdit"></el-button>
           <el-button type="danger" icon="el-icon-delete"
                      circle size="mini" @click="openDeleteConfirm(scope.row)"></el-button>
         </template>
