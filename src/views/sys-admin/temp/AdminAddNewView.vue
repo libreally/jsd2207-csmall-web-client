@@ -38,6 +38,16 @@
             inactive-color="#AAAAAA">
         </el-switch>
       </el-form-item>
+      <el-form-item label="角色" prop="roleIds">
+        <el-select v-model="ruleForm.roleIds" multiple placeholder="请选择">
+          <el-option
+              v-for="item in roleListOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">添加</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -50,15 +60,17 @@
 export default {
   data() {
     return {
+      roleListOptions: [],
       ruleForm: {
-        username: '',
-        password: '',
-        nickname: '',
-        avatar: '',
-        phone: '',
-        email: '',
-        description: '',
-        enable: 0
+        username: 'test-user-001',
+        password: '123456',
+        nickname: 'test-user',
+        avatar: 'http://www.baidu.com/logo.png',
+        phone: '13100131001',
+        email: 'test-user-001@baidu.com',
+        description: 'nothing',
+        enable: 0,
+        roleIds: []
       },
       rules: {
         username: [
@@ -84,11 +96,23 @@ export default {
         description: [
           {required: true, message: '请输入简介', trigger: 'blur'},
           {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
+        ],
+        roleIds: [
+          {required: true, message: '请至少选择1个角色', trigger: 'blur'}
         ]
       }
     };
   },
   methods: {
+    loadRoleList() {
+      console.log('loadRoleList');
+      let url = 'http://localhost:9081/roles';
+      console.log('url = ' + url);
+      this.axios.get(url).then((response) => {
+        let responseBody = response.data;
+        this.roleListOptions = responseBody.data;
+      });
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -119,6 +143,9 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
+  },
+  mounted() {
+    this.loadRoleList();
   }
 }
 </script>
