@@ -10,7 +10,7 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
       <el-table-column prop="name" label="名称" width="150" align="center"></el-table-column>
-      <el-table-column prop="pinyin" label="pinyin" header-align="center"></el-table-column>
+      <el-table-column prop="pinyin" label="pinyin" width="100px" align="center"></el-table-column>
       <el-table-column prop="logo" label="LOGO" width="100" align="center"></el-table-column>
       <el-table-column prop="description" label="简介" width="100" align="center"></el-table-column>
       <el-table-column label="操作" width="120" align="center">
