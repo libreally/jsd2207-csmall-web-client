@@ -61,7 +61,9 @@ export default {
         url += '/disable';
       }
       console.log('url = ' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state === 20000) {
           let message = '将管理员【' + admin.username + '】的启用状态改为【' + enableText[admin.enable] + '】成功！';
@@ -81,7 +83,9 @@ export default {
       console.log("loadAlbumList");
       let url='http://localhost:9081/admins';
       console.log('url='+url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(url).then((response) => {
         let responseBody = response.data;
         this.tableData = responseBody.data;
       });
@@ -95,7 +99,9 @@ export default {
     handleDelete(album) {
       let url = 'http://localhost:9081/admins/' + album.id + '/delete';
       console.log('url = ' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state !== 20000) {
           this.$message.error(responseBody.message);
@@ -118,9 +124,16 @@ export default {
     },
     loadAdminList() {
       console.log('loadAdminList');
+      console.log('localStorage中的jwt数据为:'+localStorage.getItem('jwt'));
       let url = 'http://localhost:9081/admins';
       console.log('url = ' + url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwt')
+            }
+          })
+          .get(url).then((response) => {
         let responseBody = response.data;
         this.tableData = responseBody.data;
       });

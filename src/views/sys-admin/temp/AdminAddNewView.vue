@@ -108,7 +108,9 @@ export default {
       console.log('loadRoleList');
       let url = 'http://localhost:9081/roles';
       console.log('url = ' + url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(url).then((response) => {
         let responseBody = response.data;
         this.roleListOptions = responseBody.data;
       });
@@ -120,7 +122,9 @@ export default {
           console.log('url = ' + url);
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData = ' + formData);
-          this.axios.post(url, formData).then((response) => {
+          this.axios
+              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+              .post(url, formData).then((response) => {
             let responseBody = response.data;
             console.log('responseBody = ');
             console.log(responseBody);

@@ -23,8 +23,8 @@ export default {
   data() {
     return {
       ruleForm: {
-        username: '',
-        password: ''
+        username: 'root',
+        password: '123456'
       },
       rules: {
         username: [
@@ -42,7 +42,28 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          let url = 'http://localhost:9081/admins/login';
+          console.log('url = ' + url);
+          let formData = this.qs.stringify(this.ruleForm);
+          console.log('formData = ' + formData);
+          this.axios
+              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+              .post(url, formData).then((response) => {
+            let responseBody = response.data;
+            if (responseBody.state === 20000) {
+              this.$message({
+                message: '登录成功！',
+                type: 'success'
+              });
+              let jwt = responseBody.data;
+              console.log('登录成功，服务器端响应JWT：' + jwt);
+              localStorage.setItem('jwt',jwt);
+              console.log('已经将JWT保存到localStorage');
+            } else {
+              console.log(responseBody.message);
+              this.$message.error(responseBody.message);
+            }
+          });
         } else {
           console.log('error submit!!');
           return false;
