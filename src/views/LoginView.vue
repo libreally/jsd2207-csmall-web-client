@@ -46,18 +46,16 @@ export default {
           console.log('url = ' + url);
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData = ' + formData);
-          this.axios
-              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-              .post(url, formData).then((response) => {
+          this.axios.post(url, formData).then((response) => {
             let responseBody = response.data;
-            if (responseBody.state === 20000) {
+            if (responseBody.state == 20000) {
               this.$message({
                 message: '登录成功！',
                 type: 'success'
               });
               let jwt = responseBody.data;
               console.log('登录成功，服务器端响应JWT：' + jwt);
-              localStorage.setItem('jwt',jwt);
+              localStorage.setItem('jwt', jwt);
               console.log('已经将JWT保存到localStorage');
             } else {
               console.log(responseBody.message);

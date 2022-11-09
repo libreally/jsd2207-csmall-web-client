@@ -120,7 +120,7 @@ export default {
         if (valid) {
           let url = 'http://localhost:9081/admins/add-new';
           console.log('url = ' + url);
-          let formData = this.qs.stringify(this.ruleForm);
+          let formData = this.qs.stringify(this.ruleForm, {arrayFormat: 'repeat'});
           console.log('formData = ' + formData);
           this.axios
               .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
