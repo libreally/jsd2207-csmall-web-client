@@ -37,11 +37,13 @@ export default {
   },
   methods: {
     loadBrandList() {
-      let url = 'http://localhost:9080/brand';
+      let url = 'http://localhost:9080/brands';
       console.log('url = ' + url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state === 20000) {
+        if (responseBody.state == 20000) {
           this.tableData = responseBody.data;
         } else {
           this.$message.error(responseBody.message);
@@ -68,12 +70,14 @@ export default {
       });
     },
     handleDelete(brand) {
-      let url = 'http://localhost:9080/brand/' + brand.id + '/delete';
+      let url = 'http://localhost:9080/brands/' + brand.id + '/delete';
       console.log('url = ' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post(url).then((response) => {
         let responseBody = response.data;
         console.log(responseBody);
-        if (responseBody.state !== 20000) {
+        if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
         }
         this.loadBrandList();

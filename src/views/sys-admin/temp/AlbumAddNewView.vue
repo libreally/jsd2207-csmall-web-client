@@ -1,11 +1,12 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 15px">
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px;">
       <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
       <el-breadcrumb-item>添加相册</el-breadcrumb-item>
     </el-breadcrumb>
-    <!--分割线-->
+
     <el-divider></el-divider>
+
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
@@ -23,14 +24,15 @@
     </el-form>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
       ruleForm: {
-        name: '',
-        description: '',
-        sort: ''
+        name: '测试相册001',
+        description: '测试相册简介001',
+        sort: '99'
       },
       rules: {
         name: [
@@ -42,8 +44,8 @@ export default {
           {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
         ],
         sort: [
-          {required: true, message: '请输入排序序号', trigger: 'blur'},
-        ],
+          {required: true, message: '请输入排序序号', trigger: 'blur'}
+        ]
       }
     };
   },
@@ -51,25 +53,26 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9080/album/add-newAlbum';
-          console.log('url=' + url);
+          let url = 'http://localhost:9080/albums/add-new';
+          console.log('url = ' + url);
           let formData = this.qs.stringify(this.ruleForm);
-          console.log('formData=' + formData);
-          this.axios.post(url, formData).then((response) => {
+          console.log('formData = ' + formData);
+          this.axios
+              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+              .post(url, formData).then((response) => {
             let responseBody = response.data;
-            console.log('responseBody =');
-            console.log(responseBody)
-            if (responseBody.state===100){
+            console.log('responseBody = ');
+            console.log(responseBody);
+            if (responseBody.state == 20000) {
               this.$message({
-                message: responseBody.message,
-                type:'success'
-              }
-              )
+                message: '添加相册成功！',
+                type: 'success'
+              });
               this.resetForm(formName);
-            }else{
+            } else {
               this.$message.error(responseBody.message);
             }
-          })
+          });
         } else {
           console.log('error submit!!');
           return false;

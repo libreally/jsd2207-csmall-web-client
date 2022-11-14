@@ -69,7 +69,9 @@ export default {
         url += '/disable';
       }
       console.log('url = ' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -90,7 +92,9 @@ export default {
         url += '/hidden';
       }
       console.log('url = ' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -118,18 +122,16 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // this.handleDelete(category);
-        let message = '您正在尝试删除【' + category.id + '-' + category.name + '】的类别详情，抱歉，此功能尚未实现……';
-        this.$alert(message, title, {
-          confirmButtonText: '确定'
-        });
+        this.handleDelete(category);
       }).catch(() => {
       });
     },
     handleDelete(category) {
       let url = 'http://localhost:9080/categories/' + category.id + '/delete';
       console.log('url = ' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -140,7 +142,9 @@ export default {
     loadCategoryList() {
       let url = 'http://localhost:9080/categories';
       console.log('url = ' + url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.tableData = responseBody.data;
