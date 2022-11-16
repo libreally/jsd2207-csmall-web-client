@@ -12,7 +12,7 @@
         <el-aside class="layout-aside">
           <el-menu
               router
-              :default-active="$router.currentRoute.path"
+              :default-active="activeMenuItemPath"
               class="el-menu-vertical-demo"
               background-color="#222c32"
               text-color="#fff"
@@ -87,7 +87,7 @@
                 <i class="el-icon-s-grid"></i>
                 <span slot="title">SPU台账</span>
               </el-menu-item>
-              <el-menu-item index="3-2">
+              <el-menu-item index="/sys-admin/product/spu-add-new">
                 <i class="el-icon-circle-plus"></i>
                 <span slot="title">新增SPU</span>
               </el-menu-item>
@@ -147,8 +147,6 @@
   </div>
 </template>
 
-<script>
-</script>
 
 <style>
 .layout-header {
@@ -184,3 +182,21 @@
   background: #2d3c4d !important;
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      activeMenuItemPath: ''
+    }
+  },
+  mounted() {
+    let path = this.$router.currentRoute.path;
+    if (path.startsWith('/sys-admin/product/spu-add-new')) {
+      this.activeMenuItemPath = '/sys-admin/product/spu-add-new';
+    } else {
+      this.activeMenuItemPath = path;
+    }
+  }
+}
+</script>

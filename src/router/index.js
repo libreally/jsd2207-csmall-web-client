@@ -62,6 +62,23 @@ const routes = [
         path: '/sys-admin/temp/attribute/list',
         component: () => import('../views/sys-admin/temp/AttributeListView.vue')
       },
+      //==========================================
+      {
+        path: '/sys-admin/product/spu-add-new',
+        component: () => import('../views/sys-admin/product/SpuAddNewStep1View')
+      },
+      {
+        path: '/sys-admin/product/spu-add-new2',
+        component: () => import('../views/sys-admin/product/SpuAddNewStep2View')
+      },
+      {
+        path: '/sys-admin/product/spu-add-new3',
+        component: () => import('../views/sys-admin/product/SpuAddNewStep3View')
+      },
+      {
+        path: '/sys-admin/product/spu-add-new4',
+        component: () => import('../views/sys-admin/product/SpuAddNewStep4View')
+      },
 
     ]
   },
