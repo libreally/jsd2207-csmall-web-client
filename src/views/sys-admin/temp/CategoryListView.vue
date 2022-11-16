@@ -5,10 +5,7 @@
         <i class="el-icon-s-promotion"></i> 后台管理
       </el-breadcrumb-item>
       <el-breadcrumb-item>类别列表</el-breadcrumb-item>
-      <el-breadcrumb-item><span v-if="this.currentDepth>=2"
-                                v-text="this.currentL1Category.name"></span></el-breadcrumb-item>
-      <el-breadcrumb-item><span v-if="this.currentDepth==3"
-                                v-text="this.currentL2Category.name"></span></el-breadcrumb-item>
+      <el-breadcrumb-item v-for="item in history"><span v-text="item.name"></span></el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-divider></el-divider>
@@ -59,9 +56,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button style="margin-top:10px; float:right;"
-               v-if="tableData[0].depth!==1"
-               @click="showRootCategories(scope.row)">返回根级</el-button>
+    <el-button style="margin-top: 10px; float: right;"
+               v-if="currentDepth != 1" @click="goBack()">返回
+    </el-button>
   </div>
 </template>
 
@@ -69,8 +66,7 @@
 export default {
   data() {
     return {
-      currentL1Category: null,
-      currentL2Category: null,
+      history: [],
       currentDepth: 1,
       currentParentId: 0,
       enableText: ['禁用', '启用'],
@@ -79,29 +75,15 @@ export default {
     }
   },
   methods: {
-    showParentCategories() {
-      let parentCategory;
-      if (this.currentDepth === 3) {
-        parentCategory = this.currentL2Category;
-        this.currentDepth = 2;
-      } else if (this.currentDepth === 2) {
-        parentCategory = this.currentL1Category;
-        this.currentDepth = 1;
-      }
-
+    goBack() {
+      let parentCategory = this.history[--this.currentDepth - 1];
       this.currentParentId = parentCategory.parentId;
+      this.history.pop();
       this.loadCategoryList();
     },
     showSubCategories(category) {
-      if (category.depth === 1) {
-        this.currentL1Category = category;
-        this.currentDepth = 2;
-      }
-      if (category.depth === 2) {
-        this.currentL2Category = category;
-        this.currentDepth = 3;
-      }
-
+      this.history[this.currentDepth - 1] = category;
+      this.currentDepth++;
       this.currentParentId = category.id;
       this.loadCategoryList();
     },
@@ -117,7 +99,7 @@ export default {
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .post(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state === 20000) {
+        if (responseBody.state == 20000) {
           this.$message({
             message: '操作成功，已经将【' + category.name + '】的状态改为【' + this.enableText[category.enable] + '】！',
             type: 'success'
@@ -130,7 +112,7 @@ export default {
     },
     handleChangeDisplay(category) {
       let url = 'http://localhost:9080/categories/' + category.id;
-      if (category.isDisplay === 1) {
+      if (category.isDisplay == 1) {
         url += '/display';
       } else {
         url += '/hidden';
@@ -140,7 +122,7 @@ export default {
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .post(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state === 20000) {
+        if (responseBody.state == 20000) {
           this.$message({
             message: '操作成功，已经将【' + category.name + '】的状态改为【' + this.displayText[category.isDisplay] + '】！',
             type: 'success'
@@ -177,7 +159,7 @@ export default {
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .post(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state !== 20000) {
+        if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
         }
         this.loadCategoryList();
@@ -190,7 +172,7 @@ export default {
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state === 20000) {
+        if (responseBody.state == 20000) {
           this.tableData = responseBody.data;
         } else {
           this.$message.error(responseBody.message);
@@ -202,6 +184,12 @@ export default {
     this.loadCategoryList();
   }
 }
+
+// 【关于返回上一级的模拟演示】
+// 页面刚刚打开时  ：currentParentId: 0,  currentDepth: 1,  history：[]
+// 点击“电脑办公”时：currentParentId: 1,  currentDepth: 2,  history：[{43-电脑办公}]
+// 点击“电脑配件”时：currentParentId: 43, currentDepth: 3,  history：[{43-电脑办公}, {51-电脑配件}]
+// 点击“硬盘”时   ：currentParentId: 51, currentDepth: 4,  history：[{43-电脑办公}, {51-电脑配件}, {58-硬盘}]
 </script>
 
 <style scoped>
