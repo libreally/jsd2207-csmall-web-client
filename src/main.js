@@ -6,7 +6,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 import qs from 'qs';
+import wangEditor from 'wangeditor';
 
+Vue.prototype.wangEditor=wangEditor;
 Vue.prototype.qs = qs;
 Vue.prototype.axios = axios;
 Vue.use(ElementUI);
