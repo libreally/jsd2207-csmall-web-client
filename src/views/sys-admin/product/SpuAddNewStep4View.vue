@@ -68,13 +68,36 @@ export default {
     },
     initWangEditor() {
       this.editor = new this.wangEditor('#wangEditor');
+      this.editor.config.zIndex=1;
       this.editor.create();
     },
-    submitForm(formName) {
+    submitForm: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.ruleForm.detail=this.editor.txt.html();
+          let url = 'http://localhost:9080/spu/add-new';
+          console.log(url);
+          this.ruleForm.detail = this.editor.txt.html();
           console.log(this.ruleForm);
+          let formData = this.qs.stringify(this.ruleForm);
+          console.log(formData);
+          this.axios
+              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+              .post(url, formData).then((response) => {
+            let responseBody=response.data;
+            if (responseBody.state===20000){
+              this.$alert('添加SPU成功！', '操作成功', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  localStorage.removeItem('ruleForm');
+                  this.$router.push('spu-add-new');
+                }
+              });
+              localStorage.removeItem("ruleForm");
+              this.$router.push('spu-add-new');
+            }else {
+              this.$message.error(responseBody.message);
+            }
+          });
         } else {
           console.log('error submit!!');
           return false;
